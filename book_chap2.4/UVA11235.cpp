@@ -132,65 +132,95 @@ void fill_map(int idx) {
 
 void solve(int x, int y) {
 	stack<int> s;
+	stack<int> sx;
+	stack<int> sy;
 	s.push(1);
+	sx.push(x);
+	sy.push(y);
 	
 	m.clear();
 	
 	while (!s.empty()) {
 		int idx = s.top();
+		int xx = sx.top();
+		int yy = sy.top();
 		
-		cerr << idx << "\t" << a[idx].start << "\t" << a[idx].end << "\n";
+		cerr << idx << "\t" << xx << "\t" << yy << "\t" << a[idx].start << "\t" << a[idx].end << "\n";
 		
-		if (a[idx].start == x && a[idx].end == y) {
+		if (a[idx].start == xx && a[idx].end == yy) {
 			m[idx] = a[idx];
 			s.pop();
-		} else if (a[idx].start >= x && a[idx].end <= y) {
+			sx.pop();
+			sy.pop();
+		} else if (a[idx].start >= xx && a[idx].end <= yy) {
 			m[idx] = a[idx];
 			s.pop();
-		} else if (a[idx].start == x) {
+			sx.pop();
+			sy.pop();
+		} else if (a[idx].start == xx) {
 			int mid = a[idx].start + ((a[idx].end - a[idx].start) >> 1);
 			
-			if (y > mid) {
+			if (yy > mid) {
 				if (m.find(1 + (idx << 1)) == m.end()) {
 					s.push(1 + (idx << 1));
+					sx.push(mid + 1);
+					sy.push(yy);
 					m[idx << 1] = a[idx << 1];
 				} else {
 					fill_map(idx);
 					s.pop();
+					sx.pop();
+					sy.pop();
 				}
-			} else if (y == mid) {
+			} else if (yy == mid) {
 				m[idx << 1] = a[idx << 1];
 				m[idx] = a[idx << 1];
 				s.pop();
+				sx.pop();
+				sy.pop();
 			} else {
 				if (m.find(idx << 1) == m.end()) {
 					s.push(idx << 1);
+					sx.push(xx);
+					sy.push(yy);
 				} else {
 					m[idx] = m[idx << 1];
 					s.pop();
+					sx.pop();
+					sy.pop();
 				}
 			}
-		} else if (a[idx].end == y) {
+		} else if (a[idx].end == yy) {
 			int mid = a[idx].start + ((a[idx].end - a[idx].start) >> 1);
 			
-			if (x <= mid) {
+			if (xx <= mid) {
 				if (m.find(idx << 1) == m.end()) {
 					s.push(idx << 1);
+					sx.push(xx);
+					sy.push(mid);
 					m[1 + (idx << 1)] = a[1 + (idx << 1)];
 				} else {
 					fill_map(idx);
 					s.pop();
+					sx.pop();
+					sy.pop();
 				}
-			} else if (x == mid + 1) {
+			} else if (xx == mid + 1) {
 				m[1 + (idx << 1)] = a[1 + (idx << 1)];
 				m[idx] = a[1 + (idx << 1)];
 				s.pop();
+				sx.pop();
+				sy.pop();
 			} else {
 				if (m.find(1 + (idx << 1)) == m.end()) {
 					s.push(1 + (idx << 1));
+					sx.push(xx);
+					sy.push(yy);
 				} else {
 					m[idx] = m[1 + (idx << 1)];
 					s.pop();
+					sx.pop();
+					sy.pop();
 				}
 			}
 		} else {
@@ -200,27 +230,45 @@ void solve(int x, int y) {
 			} else {
 				int mid = a[idx].start + ((a[idx].end - a[idx].start) >> 1);
 			
-				if (y < mid) {
-					if (m.find(idx << 1) == m.end())
+				if (yy <= mid) {
+					if (m.find(idx << 1) == m.end()) {
 						s.push(idx << 1);
-				} else if (y == mid) {
-					if (m.find(idx << 1) == m.end())
-						s.push(idx << 1);
+						sx.push(xx);
+						sy.push(yy);
+					}
 				} else {
-					if (x > mid) {
-						if (m.find(1 + (idx << 1)) == m.end())
+					if (xx > mid) {
+						if (m.find(1 + (idx << 1)) == m.end()) {
 							s.push(1 + (idx << 1));
-						else s.pop();
-					} else if (x == mid) {
-						if (m.find(1 + (idx << 1)) == m.end())
+							sx.push(xx);
+							sy.push(yy);
+						} else {
+							s.pop();
+							sx.pop();
+							sy.pop();
+						}
+					} else if (xx == mid) {
+						if (m.find(1 + (idx << 1)) == m.end()) {
 							s.push(1 + (idx << 1));
-						else s.pop();
+							sx.push(xx);
+							sy.push(yy);
+						 } else {
+						 	s.pop();
+						 	sx.pop();
+						 	sy.pop();
+					 	}
 					} else {
-						if (m.find(idx << 1) == m.end())
+						if (m.find(idx << 1) == m.end()) {
 							s.push(idx << 1);
+							sx.push(xx);
+							sy.push(yy);	
+						}
 							
-						if (m.find(1 + (idx << 1)) == m.end())
+						if (m.find(1 + (idx << 1)) == m.end()) {
 							s.push(1 + (idx << 1));
+							sx.push(xx);
+							sy.push(yy);	
+						}
 					}
 				}
 			}
