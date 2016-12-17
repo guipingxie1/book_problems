@@ -22,13 +22,13 @@ int beats(int x1, int y1, int x2, int y2) {
 
 int main() {
   int t, r, c, n, k, x = 0;
-  cin >> t;
+  scanf("%d", &t);
 
   while (t--) {
     if (x++)
-      cout << "\n";
+      printf("\n");
 
-    cin >> r >> c >> n;
+    scanf("%d %d %d", &r, &c, &n);
 
     for (int i = 0; i < r; ++i)
       for (int j = 0; j < c; ++j) 
@@ -78,8 +78,8 @@ int main() {
 
     for (int i = 0; i < r; ++i) {
       for (int j = 0; j < c; ++j)
-        cout << a[i][j];
-      cout << "\n";
+        printf("%c", a[i][j]);
+      printf("\n");
     }
   }
 
