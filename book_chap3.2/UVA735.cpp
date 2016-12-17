@@ -1,59 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
-					
+
+int valid[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 26, 27, 28, 30, 32, 33, 34, 36, 38, 39, 40, 42, 45, 48, 50, 51, 54, 57, 60};					
 
 int main() {
 	int n;
 	while (scanf("%d", &n), n > 0) {
 		int c = 0;
 		int p = 0;
-		int bound = min(20, n);
-		for (int i = 1; i <= bound; ++i)
-			for (int j = i; j <= bound; ++j)
-				for (int k = j; k <= bound; ++k) 
-					for (int x = 1; x <= 3; ++x) {
-						for (int y = 1; y <= 3; ++y) {
-							for (int z = 1; z <= 3; ++z) {
-								if (i * x + j * y + k * z == n) {
-									cerr << i << " " << j << " " << k << " " << x << " " << y << " " << z << "\n";
-									++c;
-								}
-								
-								if (i * x + k * z + 50 == n || i * x + k * z == n) {
-									cerr << i << " " << j << " " << k << " " << x << " " << y << " " << z << "\n";
-									++c;
-								}
-					
-								if (j * y + k * z + 50 == n || j * y + k * z == n) {
-									cerr << i << " " << j << " " << k << " " << x << " " << y << " " << z << "\n";
-									++c;
-								}								
-									
-								if (k * z + 100 == n || k * z + 50 == n || k * z == n) {
-									cerr << i << " " << j << " " << k << " " << x << " " << y << " " << z << "\n";
-									++c;
-								}
+		
+		int bound = 43;
+		for (int i = 0; i < 43; ++i)
+			if (valid[i] > n) {
+				bound = i;
+				break;
+			}
+			
+		for (int i = 0; i < bound; ++i)
+			for (int j = 0; j < bound; ++j)
+				if ((valid[i] + valid[j]) <= n)
+					for (int k = 0; k < bound; ++k) {
+						if (valid[i] + valid[j] + valid[k] == n) {
+							if (i <= j && j <= k) {
+								++c;	
+								++p;
+							} else {
+								++p;
 							}
-							
-							if (i * x + j * y + 50 == n || i * x + j * y == n) {
-								cerr << i << " " << j << " " << k << " " << x << " " << y << "\n";
-								++c;
-							}
-								
-							if (j * y + 100 == n || j * y + 50 == n || j * y == n) {
-								cerr << i << " " << j << " " << k << " " << x << " " << y << "\n";
-								++c;
-							}
-						}
-						
-						if (i * x + 100 == n || i * x + 50 == n || i * x == n) {
-							cerr << i << " " << j << " " << k << " " << x << "\n";
-							++c;
+						} else if (valid[i] + valid[j] + valid[k] > n) {
+							break;
 						}
 					}
-	
-		if (n == 150)
-			++c;
+						
 			
 		if (c) {
 			printf("NUMBER OF COMBINATIONS THAT SCORES %d IS %d.\n", n, c);
