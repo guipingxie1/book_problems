@@ -2,13 +2,21 @@
 using namespace std;
 
 int main() {
-    double esp = 0.0000001;
+    int k;
     
-    for (double i = 0.01; i < 1.59; i += 0.01)
-        for (double j = i + 0.01; j <= 20.00; j += 0.01)
-            for (double k = j + 0.01; k <= 20.00; k += 0.01)
-                for (double l = k + 0.01; l <= 20.00; i += 0.01) {
+    for (int i = 1; i < 159; ++i)
+        for (int j = i; j <= 1600; ++j)
+            for (int l = max(j, 159); l <= (2000 - i - j); ++l) 
+                if (i * j * l != 1000000) {
+                    k = ((long long)(i + j + l) * 1000000) / ((long long)(i * j * l) - 1000000);
                     
+                    if (k >= j && k <= l && (i + j + k + l <= 2000)) {
+                        long long p = i * j * k * l;
+                        long long sum = (i + j + k + l) * 1000000; 
+                        
+                        if (p == sum)
+                            printf("%.2f %.2f %.2f %.2f\n", i / 100.0, j / 100.0, k / 100.0, l / 100.0);  
+                    }     
                 }
                 
     return 0;
